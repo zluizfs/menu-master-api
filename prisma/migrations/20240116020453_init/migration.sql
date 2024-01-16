@@ -1,14 +1,14 @@
 -- CreateTable
 CREATE TABLE `AddressUser` (
-    `userId` BIGINT NOT NULL,
-    `addressId` BIGINT NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `addressId` INTEGER NOT NULL,
 
     PRIMARY KEY (`userId`, `addressId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Address` (
-    `addressId` BIGINT NOT NULL AUTO_INCREMENT,
+    `addressId` INTEGER NOT NULL AUTO_INCREMENT,
     `street` VARCHAR(100) NOT NULL,
     `number` INTEGER NOT NULL,
     `city` VARCHAR(150) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE `Address` (
 
 -- CreateTable
 CREATE TABLE `User` (
-    `userId` BIGINT NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(150) NOT NULL,
     `email` VARCHAR(254) NOT NULL,
     `password` VARCHAR(250) NOT NULL,
@@ -37,9 +37,10 @@ CREATE TABLE `Restaurant` (
     `restaurantId` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(150) NOT NULL,
     `description` VARCHAR(250) NOT NULL,
+    `imageUrl` VARCHAR(150) NOT NULL,
     `phoneNumber` VARCHAR(11) NOT NULL,
     `rating` DOUBLE NOT NULL,
-    `addressId` BIGINT NOT NULL,
+    `addressId` INTEGER NOT NULL,
 
     PRIMARY KEY (`restaurantId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -66,6 +67,7 @@ CREATE TABLE `Dishes` (
     `name` VARCHAR(150) NOT NULL,
     `description` VARCHAR(500) NOT NULL,
     `price` DECIMAL(15, 2) NOT NULL,
+    `imageUrl` VARCHAR(150) NOT NULL,
     `dischesCategoryId` TINYINT NOT NULL,
 
     PRIMARY KEY (`dishesId`)
@@ -84,7 +86,7 @@ CREATE TABLE `Order` (
     `orderId` INTEGER NOT NULL AUTO_INCREMENT,
     `restaurantId` INTEGER NOT NULL,
     `dishesId` INTEGER NOT NULL,
-    `userId` BIGINT NOT NULL,
+    `userId` INTEGER NOT NULL,
     `total` DECIMAL(15, 2) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

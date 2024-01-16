@@ -6,6 +6,7 @@ import fastifyJwt from "@fastify/jwt"
 import { env } from "./env"
 import { userRoutes } from "./http/controllers/user/routes"
 import { addressRoutes } from "./http/controllers/address/routes"
+import { restaurantRoutes } from "./http/controllers/restaurant/routes"
 
 export const app = fastify()
 
@@ -19,6 +20,7 @@ app.register(fastifyCors, {
 
 app.register(userRoutes)
 app.register(addressRoutes)
+app.register(restaurantRoutes)
 
 app.setErrorHandler((err, _, res) => {
 	if (err instanceof ZodError) {

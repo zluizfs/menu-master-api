@@ -9,7 +9,7 @@ import { Prisma } from "@prisma/client"
 export class PrismaUsersRepository implements UserRepository {
 
 	async findByEmail(email: string): Promise<{
-    userId: bigint;
+    userId: number;
     name: string;
     email: string;
     password: string;

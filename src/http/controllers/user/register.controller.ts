@@ -2,8 +2,12 @@ import { FastifyReply, FastifyRequest } from "fastify"
 
 import { AddressUserUserService, UserService } from "@menu-master-api/services"
 import { z } from "zod"
-import { PrismaAddressRepository, PrismaAddressUserRepository, PrismaUsersRepository } from "@menu-master-api/repositories/prisma"
-import { UserExistsError } from "@menu-master-api/services/errors"
+import {
+	PrismaAddressRepository,
+	PrismaAddressUserRepository,
+	PrismaUsersRepository,
+} from "@menu-master-api/repositories/prisma"
+import { UserAlreadyRegistredError } from "@menu-master-api/services/errors"
 
 export async function register(req: FastifyRequest, res: FastifyReply) {
 	const createUserBody = z.object({
@@ -27,7 +31,7 @@ export async function register(req: FastifyRequest, res: FastifyReply) {
 			phoneNumber: phoneNumber,
 		})
 	} catch (err) {
-		if (err instanceof UserExistsError) {
+		if (err instanceof UserAlreadyRegistredError) {
 			return res.status(409).send({
 				message: err.message,
 			})
@@ -39,7 +43,10 @@ export async function register(req: FastifyRequest, res: FastifyReply) {
 	return await res.status(201).send()
 }
 
-export async function registerWithAddress(req: FastifyRequest, res: FastifyReply) {
+export async function registerWithAddress(
+	req: FastifyRequest,
+	res: FastifyReply
+) {
 	const createUserBodyWithAddress = z.object({
 		name: z.string().min(3),
 		email: z.string().email(),
@@ -60,14 +67,17 @@ export async function registerWithAddress(req: FastifyRequest, res: FastifyReply
 		const addressRepository = new PrismaAddressRepository()
 		const addressUserRepository = new PrismaAddressUserRepository()
 
-		const addressUserService = new AddressUserUserService(usersRepository, addressRepository, addressUserRepository)
+		const addressUserService = new AddressUserUserService(
+			usersRepository,
+			addressRepository,
+			addressUserRepository
+		)
 
 		await addressUserService.createUserAndAddress({
-			...user
+			...user,
 		})
-
 	} catch (err) {
-		if (err instanceof UserExistsError) {
+		if (err instanceof UserAlreadyRegistredError) {
 			return res.status(409).send({
 				message: err.message,
 			})

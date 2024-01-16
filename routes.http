@@ -39,10 +39,10 @@ Content-Type: application/json
 POST http://localhost:3333/users/auth
 Content-Type: application/json
 
-{
-  "email": "zluizfs1@outlook.com",
-  "password": "123456"
-}
+  {
+    "email": "zluizfs1@outlook.com",
+    "password": "123456"
+  }
 
 ###
 

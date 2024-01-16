@@ -5,10 +5,31 @@ import { Prisma } from "@prisma/client"
 
 export class PrismaAddressRepository implements AddressRepository {
 	async create(data: Prisma.AddressCreateInput) {
-		const user = await prisma.address.create({
+		const address = await prisma.address.create({
 			data,
 		})
 
-		return user
+		return address
+	}
+
+	async findById(addressId: number) {
+		const address = await prisma.address.findUnique({
+			where: {
+				addressId: addressId
+			}
+		})
+
+		return address
+	}
+
+	async update(addressId: number, data: Prisma.AddressUpdateInput) {
+		const address = await prisma.address.update({
+			data,
+			where: {
+				addressId: addressId,
+			}
+		})
+
+		return address
 	}
 }
