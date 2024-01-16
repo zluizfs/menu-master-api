@@ -1,0 +1,66 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA1Mjg4NjQxLCJleHAiOjE3MDUzMDMwNDF9.nf9laO4lxVZJzkONgJRGBeC1C0szW0qZeiWpMMbCciU
+
+# @name Users
+
+## @name Create
+POST http://localhost:3333/users
+Content-Type: application/json
+
+{
+  "name": "Luiz Fernando",
+  "email": "zluizfs@outlook.com",
+  "password": "123456",
+  "phoneNumber": "34991801065"
+}
+
+###
+
+## @name CompleteRegistration
+POST http://localhost:3333/users/complete-registration
+Content-Type: application/json
+
+{
+  "name": "Luiz Fernando",
+  "email": "zluizfs1@outlook.com",
+  "password": "123456",
+  "phoneNumber": "34991801065",
+  "street": "Antônio Manoel",
+  "number": 490,
+  "city": "Carmo do Paranaíba",
+  "state": "MG",
+  "landmark": "",
+  "complement": ""
+}
+
+
+###
+
+## @name Authenticate
+POST http://localhost:3333/users/auth
+Content-Type: application/json
+
+{
+  "email": "zluizfs1@outlook.com",
+  "password": "123456"
+}
+
+###
+
+# @name Address
+
+## @name Create
+POST http://localhost:3333/address
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "street": "Antônio Manoel",
+  "number": 490,
+  "city": "Carmo do Paranaíba",
+  "state": "MG",
+  "landmark": "",
+  "complement": ""
+}
+
+###
+
