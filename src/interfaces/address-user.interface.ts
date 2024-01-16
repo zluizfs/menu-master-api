@@ -5,8 +5,8 @@ import { AddressServiceRequest } from "./address.interface"
 export interface AddressUserRequestWithUserAndAddress extends UserServiceRequest, AddressServiceRequest {}
 
 export interface AddressUserServiceRequest {
-  userId: bigint;
-  addressId: bigint;
+  userId: number;
+  addressId: number;
 }
 
 export interface AddressUserRepository {

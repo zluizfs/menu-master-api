@@ -4,7 +4,7 @@ import {
 } from "@menu-master-api/interfaces/user.interface"
 
 import { hash } from "bcryptjs"
-import { UserExistsError } from "./errors"
+import { UserAlreadyRegistredError } from "./errors"
 
 export class UserService {
 	constructor(private userRepository: UserRepository) {}
@@ -15,7 +15,7 @@ export class UserService {
 		const verifyEmailExists = await this.userRepository.findByEmail(email)
 
 		if (verifyEmailExists) {
-			throw new UserExistsError()
+			throw new UserAlreadyRegistredError()
 		}
 
 		const user = await this.userRepository.create({

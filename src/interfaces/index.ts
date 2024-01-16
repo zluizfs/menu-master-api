@@ -1,2 +1,5 @@
 export * from "./user.interface"
 export * from "./authentication.interface"
+export * from "./address-user.interface"
+export * from "./address.interface"
+export * from "./restaurant.interface"

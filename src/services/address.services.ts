@@ -1,30 +1,48 @@
 import {
 	AddressRepository,
 	AddressServiceRequest,
+	AddressServiceUpdateRequest,
 } from "@menu-master-api/interfaces/address.interface"
+import { AddressNotExistsError } from "./errors"
 
 export class AddressService {
 	constructor(private addressRepository: AddressRepository) {}
 
+	async findById(addressId: number) {
+		const address = await this.addressRepository.findById(addressId)
+
+		if(!address){
+			throw new AddressNotExistsError()
+		}
+		
+		return address
+	}
+
 	async create({
-		street,
-		number,
-		city,
-		state,
-		landmark,
-		complement,
+		...data
 	}: AddressServiceRequest) {
 		const address = await this.addressRepository.create({
-			street,
-			number,
-			city,
-			state,
-			landmark,
-			complement,
+			...data,
 		})
 
 		return {
-			address
+			address,
+		}
+	}
+
+	async update({ addressId, modifiedAddress }: AddressServiceUpdateRequest) {
+		const verifyAddressExists = await this.addressRepository.findById(addressId)
+
+		if(!verifyAddressExists){
+			throw new AddressNotExistsError()
+		}
+
+		const address = await this.addressRepository.update(addressId, {
+			...modifiedAddress,
+		})
+
+		return {
+			address,
 		}
 	}
 }

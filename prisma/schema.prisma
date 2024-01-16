@@ -9,15 +9,15 @@ datasource db {
 
 model AddressUser {
   user      User    @relation(fields: [userId], references: [userId])
-  userId    BigInt
+  userId    Int
   address   Address @relation(fields: [addressId], references: [addressId])
-  addressId BigInt
+  addressId Int
 
   @@id([userId, addressId])
 }
 
 model Address {
-  addressId  BigInt        @id @default(autoincrement())
+  addressId  Int           @id @default(autoincrement())
   street     String        @db.VarChar(100)
   number     Int
   city       String        @db.VarChar(150)
@@ -29,7 +29,7 @@ model Address {
 }
 
 model User {
-  userId      BigInt        @id @default(autoincrement())
+  userId      Int           @id @default(autoincrement())
   name        String        @db.VarChar(150)
   email       String        @unique @db.VarChar(254)
   password    String        @db.VarChar(250)
@@ -43,9 +43,10 @@ model Restaurant {
   restaurantId           Int                      @id @default(autoincrement())
   name                   String                   @db.VarChar(150)
   description            String                   @db.VarChar(250)
+  imageUrl               String                   @db.VarChar(150)
   phoneNumber            String                   @db.VarChar(11)
   rating                 Float
-  addressId              BigInt
+  addressId              Int
   address                Address                  @relation(fields: [addressId], references: [addressId])
   restaurantOpeningHours RestaurantOpeningHours[]
   restaurantDisches      RestaurantDisches[]
@@ -71,6 +72,7 @@ model Dishes {
   name              String              @db.VarChar(150)
   description       String              @db.VarChar(500)
   price             Decimal             @db.Decimal(15, 2)
+  imageUrl          String              @db.VarChar(150)
   dischesCategoryId Int                 @db.TinyInt
   dischesCategory   DischesCategory     @relation(fields: [dischesCategoryId], references: [dischesCategoryId])
   restaurantDisches RestaurantDisches[]
@@ -87,16 +89,15 @@ model RestaurantDisches {
 }
 
 model Order {
-  orderId      Int     @default(autoincrement())
+  orderId      Int        @default(autoincrement())
   restaurantId Int
   dishesId     Int
-  userId       BigInt
-  total        Decimal @db.Decimal(15, 2)
-
-  user       User       @relation(fields: [userId], references: [userId])
-  restaurant Restaurant @relation(fields: [restaurantId], references: [restaurantId])
-  disches    Dishes     @relation(fields: [dishesId], references: [dishesId])
-  createdAt  DateTime   @default(now())
+  userId       Int
+  total        Decimal    @db.Decimal(15, 2)
+  user         User       @relation(fields: [userId], references: [userId])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurantId])
+  disches      Dishes     @relation(fields: [dishesId], references: [dishesId])
+  createdAt    DateTime   @default(now())
 
   @@id([orderId, restaurantId])
 }
