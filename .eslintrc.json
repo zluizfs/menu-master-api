@@ -33,6 +33,7 @@
             "error",
             "never"
         ],
-        "no-useless-catch": "off"
+        "no-useless-catch": "off",
+        "no-mixed-spaces-and-tabs": "off"
     }
 }

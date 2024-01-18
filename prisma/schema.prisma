@@ -17,15 +17,16 @@ model AddressUser {
 }
 
 model Address {
-  addressId  Int           @id @default(autoincrement())
-  street     String        @db.VarChar(100)
-  number     Int
-  city       String        @db.VarChar(150)
-  state      String        @db.VarChar(2)
-  landmark   String        @db.VarChar(50)
-  complement String        @db.VarChar(50)
-  users      AddressUser[]
-  restaurant Restaurant[]
+  addressId    Int           @id @default(autoincrement())
+  street       String        @db.VarChar(100)
+  number       Int
+  neighborhood String        @db.VarChar(100)
+  city         String        @db.VarChar(150)
+  state        String        @db.VarChar(2)
+  landmark     String        @db.VarChar(50)
+  complement   String        @db.VarChar(50)
+  users        AddressUser[]
+  restaurants  Restaurant[]
 }
 
 model User {
@@ -40,7 +41,7 @@ model User {
 }
 
 model Restaurant {
-  restaurantId           Int                      @id @default(autoincrement())
+  id                     Int                      @id @default(autoincrement())
   name                   String                   @db.VarChar(150)
   description            String                   @db.VarChar(250)
   imageUrl               String                   @db.VarChar(150)
@@ -49,55 +50,54 @@ model Restaurant {
   addressId              Int
   address                Address                  @relation(fields: [addressId], references: [addressId])
   restaurantOpeningHours RestaurantOpeningHours[]
-  restaurantDisches      RestaurantDisches[]
-  order                  Order[]
+  orders                 Order[]
+  dishes                 Dish[]
 }
 
 model RestaurantOpeningHours {
-  restaurantOpeningHoursId Int        @default(autoincrement()) @db.TinyInt
-  restaurantRestaurantId   Int
-  restaurant               Restaurant @relation(fields: [restaurantRestaurantId], references: [restaurantId])
-
-  @@id([restaurantOpeningHoursId, restaurantRestaurantId])
+  restaurantOpeningHoursId Int        @id @default(autoincrement()) @db.TinyInt
+  restaurantId             Int
+  day                      Int        @db.TinyInt
+  openTime                 DateTime   @db.Time()
+  closeTime                DateTime   @db.Time()
+  restaurants              Restaurant @relation(fields: [restaurantId], references: [id])
 }
 
-model DischesCategory {
-  dischesCategoryId Int      @id @default(autoincrement()) @db.TinyInt
-  description       String   @db.VarChar(50)
-  dishes            Dishes[]
+model DishesCategory {
+  dishesCategoryId Int    @id @default(autoincrement()) @db.TinyInt
+  description      String @db.VarChar(50)
+  dishes           Dish[]
 }
 
-model Dishes {
-  dishesId          Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(150)
-  description       String              @db.VarChar(500)
-  price             Decimal             @db.Decimal(15, 2)
-  imageUrl          String              @db.VarChar(150)
-  dischesCategoryId Int                 @db.TinyInt
-  dischesCategory   DischesCategory     @relation(fields: [dischesCategoryId], references: [dischesCategoryId])
-  restaurantDisches RestaurantDisches[]
-  order             Order[]
-}
-
-model RestaurantDisches {
-  restaurantId Int
-  dishesId     Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurantId])
-  disches      Dishes     @relation(fields: [dishesId], references: [dishesId])
-
-  @@id([dishesId, restaurantId])
+model Dish {
+  dishId                Int                     @id @default(autoincrement())
+  name                  String                  @db.VarChar(150)
+  description           String                  @db.VarChar(500)
+  price                 Decimal                 @db.Decimal(15, 2)
+  imageUrl              String                  @db.VarChar(150)
+  dishesCategoryId      Int                     @db.TinyInt
+  dishesCategory        DishesCategory          @relation(fields: [dishesCategoryId], references: [dishesCategoryId])
+  restaurantId          Int
+  restaurant            Restaurant              @relation(fields: [restaurantId], references: [id])
+  orderRestaurantDishes OrderRestaurantDishes[]
 }
 
 model Order {
-  orderId      Int        @default(autoincrement())
-  restaurantId Int
-  dishesId     Int
-  userId       Int
-  total        Decimal    @db.Decimal(15, 2)
-  user         User       @relation(fields: [userId], references: [userId])
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurantId])
-  disches      Dishes     @relation(fields: [dishesId], references: [dishesId])
-  createdAt    DateTime   @default(now())
+  orderId               Int                     @id @default(autoincrement())
+  restaurantId          Int
+  userId                Int
+  total                 Decimal                 @db.Decimal(15, 2)
+  user                  User                    @relation(fields: [userId], references: [userId])
+  restaurant            Restaurant              @relation(fields: [restaurantId], references: [id])
+  createdAt             DateTime                @default(now())
+  orderRestaurantDishes OrderRestaurantDishes[]
+}
 
-  @@id([orderId, restaurantId])
+model OrderRestaurantDishes {
+  orderId Int
+  dishId  Int
+  orders  Order @relation(fields: [orderId], references: [orderId])
+  dishes  Dish  @relation(fields: [dishId], references: [dishId])
+
+  @@id([orderId])
 }

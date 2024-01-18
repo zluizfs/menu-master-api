@@ -1,6 +1,7 @@
 import {
 	RestaurantCreateServiceRequest,
 	RestaurantRepository,
+	RestaurantServiceResponse,
 } from "@menu-master-api/interfaces"
 
 import { prisma } from "@menu-master-api/lib/prisma"
@@ -34,11 +35,37 @@ export class PrismaRestaurantRepository implements RestaurantRepository {
 		return restaurant
 	}
 
-	async findById(restaurantId: number) {
+	async findAll(nameOrDescription: string)  {
+		const restaurant = await prisma.restaurant.findMany({
+			where: {
+				OR: [
+					{
+						name: {
+							contains: nameOrDescription,
+						},
+					},
+					{
+						description: {
+							contains: nameOrDescription,
+						},
+					},
+				],
+			},
+
+		})
+  
+		return restaurant
+	}
+  
+
+	async findById(restaurantId: number): Promise<RestaurantServiceResponse | null> {
 		const restaurant = await prisma.restaurant.findUnique({
 			where: {
-				restaurantId: restaurantId,
+				id: restaurantId,
 			},
+			include: {
+				address: true
+			}
 		})
 
 		return restaurant
@@ -58,7 +85,7 @@ export class PrismaRestaurantRepository implements RestaurantRepository {
 		const address = await prisma.restaurant.update({
 			data,
 			where: {
-				restaurantId: restaurantId,
+				id: restaurantId,
 			},
 		})
 

@@ -9,3 +9,9 @@ export class UserAlreadyRegistredError extends Error {
 		super("E-mail informado já existe!")
 	}
 }
+
+export class UserNotFoundError extends Error {
+	constructor() {
+		super("Usuário nao encontrado!")
+	}
+}

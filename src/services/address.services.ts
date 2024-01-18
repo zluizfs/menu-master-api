@@ -30,7 +30,7 @@ export class AddressService {
 		}
 	}
 
-	async update({ addressId, modifiedAddress }: AddressServiceUpdateRequest) {
+	async update(addressId: number, { modifiedAddress }: AddressServiceUpdateRequest) {
 		const verifyAddressExists = await this.addressRepository.findById(addressId)
 
 		if(!verifyAddressExists){

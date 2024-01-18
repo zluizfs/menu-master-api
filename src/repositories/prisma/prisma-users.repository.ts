@@ -1,23 +1,34 @@
-import {
-	UserRepository,
-} from "@menu-master-api/interfaces"
+import { UserRepository } from "@menu-master-api/interfaces"
 import { prisma } from "@menu-master-api/lib/prisma"
 
 import { Prisma } from "@prisma/client"
 
-
 export class PrismaUsersRepository implements UserRepository {
+	async findById(userId: number)  {
+		const user = await prisma.user.findUnique({
+			where: { userId },
+			include: {
+				addresses: {
+					include: {
+						address: true,
+					},
+				},
+			},
+		})
 
-	async findByEmail(email: string): Promise<{
-    userId: number;
-    name: string;
-    email: string;
-    password: string;
-    phoneNumber: string;
-    createdAt: Date;
-  } | null> {
+		return user
+	}
+
+	async findByEmail(email: string)  {
 		const user = await prisma.user.findUnique({
 			where: { email: email },
+			include: {
+				addresses: {
+					include: {
+						address: true,
+					},
+				},
+			},
 		})
 
 		return user
@@ -29,5 +40,4 @@ export class PrismaUsersRepository implements UserRepository {
 
 		return user
 	}
-	
 }

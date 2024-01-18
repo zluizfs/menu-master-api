@@ -15,7 +15,7 @@ export class PrismaAddressRepository implements AddressRepository {
 	async findById(addressId: number) {
 		const address = await prisma.address.findUnique({
 			where: {
-				addressId: addressId
+				addressId
 			}
 		})
 
@@ -26,7 +26,7 @@ export class PrismaAddressRepository implements AddressRepository {
 		const address = await prisma.address.update({
 			data,
 			where: {
-				addressId: addressId,
+				addressId,
 			}
 		})
 

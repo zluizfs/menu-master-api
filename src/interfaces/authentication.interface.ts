@@ -1,4 +1,4 @@
-import { User } from "@prisma/client"
+import { UserServiceResponseWithAddress } from "./user.interface"
 
 export interface AuthenticateServiceRequest {
   email: string;
@@ -6,5 +6,5 @@ export interface AuthenticateServiceRequest {
 }
 
 export interface AuthenticateServiceResponse  {
-  user: User
+  user: UserServiceResponseWithAddress
 }

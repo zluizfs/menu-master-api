@@ -40,6 +40,7 @@ export class AddressUserUserService {
 			const { address } = await addressService.create({
 				street: data.street,
 				number: data.number,
+				neighborhood: data.neighborhood,
 				city: data.city,
 				state: data.state,
 				complement: data.complement,

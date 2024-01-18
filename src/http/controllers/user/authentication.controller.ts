@@ -28,17 +28,21 @@ export async function authentication(req: FastifyRequest, res: FastifyReply) {
 			{
 				sign: {
 					sub: String(user.userId),
-					expiresIn: "4h"
+					expiresIn: "4h",
 				},
-			},
+			}
 		)
 
 		return await res.status(200).send({
+			user: {
+				name: user.name,
+				addresses: user.addresses?.map((address) => address.address),
+			},
 			token,
 		})
 	} catch (err) {
 		if (err instanceof InvalidCredentialsError) {
-			return res.status(409).send({
+			return res.status(400).send({
 				message: err.message,
 			})
 		}

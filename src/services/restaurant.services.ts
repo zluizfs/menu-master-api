@@ -1,4 +1,7 @@
-import { RestaurantAlreadyRegisteredError, RestaurantNotExistsError } from "./errors"
+import {
+	RestaurantAlreadyRegisteredError,
+	RestaurantNotExistsError,
+} from "./errors"
 import {
 	RestaurantCreateServiceRequest,
 	RestaurantRepository,
@@ -28,6 +31,10 @@ export class RestaurantService {
 		return restaurant
 	}
 
+	async findAll(nameOrDescription: string) {
+		const restaurants = await this.restaurantRepository.findAll(nameOrDescription)
+		return restaurants
+	}
 
 	async create({
 		name,
@@ -37,12 +44,13 @@ export class RestaurantService {
 		rating,
 		address,
 	}: RestaurantCreateServiceRequest) {
-		const restaurantAlreadyRegistered = await this.restaurantRepository.findByName(name)
+		const restaurantAlreadyRegistered =
+      await this.restaurantRepository.findByName(name)
 
 		if (restaurantAlreadyRegistered) {
 			throw new RestaurantAlreadyRegisteredError()
 		}
-    
+
 		const restaurant = await this.restaurantRepository.create({
 			name,
 			description,
@@ -57,7 +65,10 @@ export class RestaurantService {
 		}
 	}
 
-	async update({ restaurantId, modifiedRestaurant }: RestaurantServiceUpdateRequest) {
+	async update(
+		restaurantId: number,
+		{ modifiedRestaurant }: RestaurantServiceUpdateRequest
+	) {
 		const verifyRestaurantExists = await this.restaurantRepository.findById(
 			restaurantId
 		)
