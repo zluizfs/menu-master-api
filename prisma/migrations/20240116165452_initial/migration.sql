@@ -48,49 +48,59 @@ CREATE TABLE `Restaurant` (
 -- CreateTable
 CREATE TABLE `RestaurantOpeningHours` (
     `restaurantOpeningHoursId` TINYINT NOT NULL AUTO_INCREMENT,
-    `restaurantRestaurantId` INTEGER NOT NULL,
+    `restaurantId` INTEGER NOT NULL,
+    `day` TINYINT NOT NULL,
+    `openTime` TIME NOT NULL,
+    `closeTime` TIME NOT NULL,
 
-    PRIMARY KEY (`restaurantOpeningHoursId`, `restaurantRestaurantId`)
+    PRIMARY KEY (`restaurantOpeningHoursId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DischesCategory` (
-    `dischesCategoryId` TINYINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE `DishesCategory` (
+    `dishesCategoryId` TINYINT NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(50) NOT NULL,
 
-    PRIMARY KEY (`dischesCategoryId`)
+    PRIMARY KEY (`dishesCategoryId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Dishes` (
-    `dishesId` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Dishe` (
+    `disheId` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(150) NOT NULL,
     `description` VARCHAR(500) NOT NULL,
     `price` DECIMAL(15, 2) NOT NULL,
     `imageUrl` VARCHAR(150) NOT NULL,
-    `dischesCategoryId` TINYINT NOT NULL,
+    `dishesCategoryId` TINYINT NOT NULL,
 
-    PRIMARY KEY (`dishesId`)
+    PRIMARY KEY (`disheId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `RestaurantDisches` (
+CREATE TABLE `RestaurantDishes` (
     `restaurantId` INTEGER NOT NULL,
-    `dishesId` INTEGER NOT NULL,
+    `disheId` INTEGER NOT NULL,
 
-    PRIMARY KEY (`dishesId`, `restaurantId`)
+    PRIMARY KEY (`disheId`, `restaurantId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Order` (
     `orderId` INTEGER NOT NULL AUTO_INCREMENT,
     `restaurantId` INTEGER NOT NULL,
-    `dishesId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
     `total` DECIMAL(15, 2) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    PRIMARY KEY (`orderId`, `restaurantId`)
+    PRIMARY KEY (`orderId`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `OrderRestaurantDishes` (
+    `orderId` INTEGER NOT NULL,
+    `disheId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`orderId`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -103,16 +113,16 @@ ALTER TABLE `AddressUser` ADD CONSTRAINT `AddressUser_addressId_fkey` FOREIGN KE
 ALTER TABLE `Restaurant` ADD CONSTRAINT `Restaurant_addressId_fkey` FOREIGN KEY (`addressId`) REFERENCES `Address`(`addressId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RestaurantOpeningHours` ADD CONSTRAINT `RestaurantOpeningHours_restaurantRestaurantId_fkey` FOREIGN KEY (`restaurantRestaurantId`) REFERENCES `Restaurant`(`restaurantId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `RestaurantOpeningHours` ADD CONSTRAINT `RestaurantOpeningHours_restaurantId_fkey` FOREIGN KEY (`restaurantId`) REFERENCES `Restaurant`(`restaurantId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Dishes` ADD CONSTRAINT `Dishes_dischesCategoryId_fkey` FOREIGN KEY (`dischesCategoryId`) REFERENCES `DischesCategory`(`dischesCategoryId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Dishe` ADD CONSTRAINT `Dishe_dishesCategoryId_fkey` FOREIGN KEY (`dishesCategoryId`) REFERENCES `DishesCategory`(`dishesCategoryId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RestaurantDisches` ADD CONSTRAINT `RestaurantDisches_restaurantId_fkey` FOREIGN KEY (`restaurantId`) REFERENCES `Restaurant`(`restaurantId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `RestaurantDishes` ADD CONSTRAINT `RestaurantDishes_restaurantId_fkey` FOREIGN KEY (`restaurantId`) REFERENCES `Restaurant`(`restaurantId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RestaurantDisches` ADD CONSTRAINT `RestaurantDisches_dishesId_fkey` FOREIGN KEY (`dishesId`) REFERENCES `Dishes`(`dishesId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `RestaurantDishes` ADD CONSTRAINT `RestaurantDishes_disheId_fkey` FOREIGN KEY (`disheId`) REFERENCES `Dishe`(`disheId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Order` ADD CONSTRAINT `Order_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -121,4 +131,7 @@ ALTER TABLE `Order` ADD CONSTRAINT `Order_userId_fkey` FOREIGN KEY (`userId`) RE
 ALTER TABLE `Order` ADD CONSTRAINT `Order_restaurantId_fkey` FOREIGN KEY (`restaurantId`) REFERENCES `Restaurant`(`restaurantId`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Order` ADD CONSTRAINT `Order_dishesId_fkey` FOREIGN KEY (`dishesId`) REFERENCES `Dishes`(`dishesId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `OrderRestaurantDishes` ADD CONSTRAINT `OrderRestaurantDishes_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Order`(`orderId`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `OrderRestaurantDishes` ADD CONSTRAINT `OrderRestaurantDishes_disheId_fkey` FOREIGN KEY (`disheId`) REFERENCES `Dishe`(`disheId`) ON DELETE RESTRICT ON UPDATE CASCADE;

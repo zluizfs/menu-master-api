@@ -1,16 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { z } from "zod"
-
 import { PrismaAddressRepository } from "@menu-master-api/repositories/prisma/prisma-address.repository"
 import { AddressService } from "@menu-master-api/services/address.services"
 import { AddressNotExistsError } from "@menu-master-api/services/errors"
-import { addressValidationBody } from "@menu-master-api/services/validations"
+import { addressValidationBody, addressValidationParams } from "@menu-master-api/services/validations"
 
 export async function update(req: FastifyRequest, res: FastifyReply) {
-	const paramsAddressSchema = z.object({ addressId: z.string() })
-
-	const { addressId } = paramsAddressSchema.parse(req.params)
+	const { addressId } = addressValidationParams.parse(req.params)
 
 	const address = addressValidationBody.parse(req.body)
 
@@ -19,8 +15,9 @@ export async function update(req: FastifyRequest, res: FastifyReply) {
 
 		const addressService = new AddressService(addressRepository)
 
-		await addressService.update({
-			addressId: Number(addressId),
+		const parsedAddressId = Number(addressId)
+
+		await addressService.update(parsedAddressId, {
 			modifiedAddress: address,
 		})
 

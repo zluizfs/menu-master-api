@@ -7,6 +7,8 @@ import { env } from "./env"
 import { userRoutes } from "./http/controllers/user/routes"
 import { addressRoutes } from "./http/controllers/address/routes"
 import { restaurantRoutes } from "./http/controllers/restaurant/routes"
+import { orderRoutes } from "./http/controllers/order/routes"
+import { disheRoutes } from "./http/controllers/dishe/routes"
 
 export const app = fastify()
 
@@ -20,7 +22,9 @@ app.register(fastifyCors, {
 
 app.register(userRoutes)
 app.register(addressRoutes)
+app.register(orderRoutes)
 app.register(restaurantRoutes)
+app.register(disheRoutes)
 
 app.setErrorHandler((err, _, res) => {
 	if (err instanceof ZodError) {

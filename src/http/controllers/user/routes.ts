@@ -6,5 +6,5 @@ import { register, registerWithAddress } from "./register.controller"
 export async function userRoutes(app: FastifyInstance) {
 	app.post("/users", register)
 	app.post("/users/complete-registration", registerWithAddress)
-	app.post("/users/auth", authentication)
+	app.post("/auth", authentication)
 }

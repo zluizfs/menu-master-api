@@ -10,7 +10,6 @@ export interface AddressServiceRequest {
 }
 
 export interface AddressServiceUpdateRequest  {
-  addressId: number
   modifiedAddress: Prisma.AddressUpdateInput
 }
 

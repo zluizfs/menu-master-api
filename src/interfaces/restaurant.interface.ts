@@ -10,7 +10,6 @@ export interface RestaurantCreateServiceRequest {
 }
 
 export interface RestaurantServiceUpdateRequest  {
-  restaurantId: number
   modifiedRestaurant: Prisma.RestaurantUpdateInput
 }
 

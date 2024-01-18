@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+export const addressValidationParams = z.object({ addressId: z.string() })
+
 export const addressValidationBody = z.object({
 	street: z.string().min(1),
 	number: z.number(),
