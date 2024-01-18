@@ -18,8 +18,6 @@ export async function findById(req: FastifyRequest, res: FastifyReply) {
 
 		const address = await addressService.findById(Number(addressId))
 
-		console.log(address)
-
 		return await res.status(200).send(address)
 	} catch (err) {
 		if (err instanceof AddressNotExistsError) {

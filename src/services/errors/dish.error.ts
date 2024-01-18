@@ -1,4 +1,4 @@
-export class DisheNotExistsError extends Error {
+export class DishNotExistsError extends Error {
 	constructor() {
 		super("Prato não encontrado!")
 	}

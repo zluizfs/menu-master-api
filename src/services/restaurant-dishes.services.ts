@@ -7,19 +7,17 @@ import { RestaurantDishesAlrealdyLinked } from "./errors"
 export class RestaurantDishesService {
 	constructor(private restaurantDishesRepository: RestaurantDishesRepository) {}
 
-	async create({
-		disheId,
-		restaurantId
-	}: RestaurantDishesServiceCreateRequest) {
-		const verifyRestaurantDishesIsLinked = await this.restaurantDishesRepository.findById(disheId, restaurantId)
+	async create({ dishId, restaurantId }: RestaurantDishesServiceCreateRequest) {
+		const verifyRestaurantDishesIsLinked =
+      await this.restaurantDishesRepository.findById(dishId, restaurantId)
 
-		if(verifyRestaurantDishesIsLinked){
+		if (verifyRestaurantDishesIsLinked) {
 			throw new RestaurantDishesAlrealdyLinked()
 		}
 
 		const restaurantDishes = await this.restaurantDishesRepository.create({
-			disheId,
-			restaurantId
+			dishId,
+			restaurantId,
 		})
 
 		return {

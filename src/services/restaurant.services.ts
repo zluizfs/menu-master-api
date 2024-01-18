@@ -31,6 +31,11 @@ export class RestaurantService {
 		return restaurant
 	}
 
+	async findAll(nameOrDescription: string) {
+		const restaurants = await this.restaurantRepository.findAll(nameOrDescription)
+		return restaurants
+	}
+
 	async create({
 		name,
 		description,

@@ -1,25 +1,31 @@
-import { OrderCreateServiceRequest, OrderRepository } from "@menu-master-api/interfaces"
+import {
+	OrderCreateServiceRequest,
+	OrderRepository,
+} from "@menu-master-api/interfaces"
 import { prisma } from "@menu-master-api/lib/prisma"
 
 import { Prisma } from "@prisma/client"
 
 export class PrismaOrderRepository implements OrderRepository {
-	async create(userId: number, { total, restaurantId, orderDishes }: OrderCreateServiceRequest) {
+	async create(
+		userId: number,
+		{ total, restaurantId, orderDishes }: OrderCreateServiceRequest
+	) {
 		const order = await prisma.order.create({
 			data: {
 				total,
 				restaurantId,
 				userId,
 				orderRestaurantDishes: {
-					create: orderDishes.map(({ disheId }) => ({
+					create: orderDishes.map(({ dishId }) => ({
 						dishes: {
 							connect: {
-								disheId: disheId,
+								dishId: dishId,
 							},
 						},
 					})),
 				},
-			}
+			},
 		})
 
 		return order
@@ -29,8 +35,8 @@ export class PrismaOrderRepository implements OrderRepository {
 		const order = await prisma.order.findUnique({
 			where: {
 				orderId,
-				restaurantId
-			}
+				restaurantId,
+			},
 		})
 
 		return order
@@ -39,19 +45,19 @@ export class PrismaOrderRepository implements OrderRepository {
 	async findByUserId(userId: number) {
 		const order = await prisma.order.findMany({
 			where: {
-				userId
-			}
+				userId,
+			},
 		})
 
 		return order
 	}
 
-	async update(orderId: number,  data: Prisma.OrderUpdateInput) {
+	async update(orderId: number, data: Prisma.OrderUpdateInput) {
 		const order = await prisma.order.update({
 			data,
 			where: {
 				orderId,
-			}
+			},
 		})
 
 		return order

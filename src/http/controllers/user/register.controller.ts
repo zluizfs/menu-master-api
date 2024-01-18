@@ -51,6 +51,7 @@ export async function registerWithAddress(
 		name: z.string().min(3),
 		email: z.string().email(),
 		password: z.string().min(6).max(30),
+		neighborhood: z.string(),
 		phoneNumber: z.string().min(10).max(11),
 		street: z.string().min(1),
 		number: z.number(),

@@ -5,7 +5,7 @@ import { AddressService } from "@menu-master-api/services/address.services"
 import { addressValidationBody } from "@menu-master-api/services/validations"
 
 export async function create(req: FastifyRequest, res: FastifyReply) {
-	const { street, number, city, state, landmark, complement } =
+	const { street, number, city, state, landmark, complement, neighborhood } =
     addressValidationBody.parse(req.body)
 
 	try {
@@ -17,6 +17,7 @@ export async function create(req: FastifyRequest, res: FastifyReply) {
 			street: street,
 			number: number,
 			city: city,
+			neighborhood: neighborhood,
 			state: state,
 			landmark: landmark,
 			complement: complement,

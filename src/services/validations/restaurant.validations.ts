@@ -9,3 +9,7 @@ export const restaurantValidationBody = z.object({
 	phoneNumber: z.string().min(11),
 	address: addressValidationBody,
 })
+
+export const restaurantValidationQuery = z.object({
+	nameOrDescription: z.string().optional(),
+})

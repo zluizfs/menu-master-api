@@ -1,11 +1,14 @@
-import { RestaurantDishes } from "@prisma/client"
+import { RestaurantDishes } from "@prisma/client";
 
 export interface RestaurantDishesServiceCreateRequest {
-  restaurantId: number
-  disheId: number
+  restaurantId: number;
+  dishId: number;
 }
 
 export interface RestaurantDishesRepository {
-  findById(restaurantId: number, disheId: number): Promise<RestaurantDishes | null>
-  create(data: RestaurantDishesServiceCreateRequest): Promise<RestaurantDishes>
+  findById(
+    restaurantId: number,
+    dishId: number
+  ): Promise<RestaurantDishes | null>;
+  create(data: RestaurantDishesServiceCreateRequest): Promise<RestaurantDishes>;
 }
